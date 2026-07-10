@@ -9,6 +9,6 @@ Technical specification for the Rehearse test framework.
 | [features](features/README.md) | Feature specifications for Rehearse |
 | [conventions](conventions.md) | File naming and directory conventions |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.

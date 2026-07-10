@@ -1,6 +1,7 @@
 # Feature: CLI
 
 **Status:** In Progress
+**Source Ideas:** —
 
 ## Summary
 
@@ -75,6 +76,9 @@ Acceptance criteria are defined at the per-command level. See each command's spe
 - [cli/validate ACs](validate/_acs/README.md) — 8 ACs
 - [cli/version ACs](version/_acs/README.md) — 1 AC
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/feature-specification*

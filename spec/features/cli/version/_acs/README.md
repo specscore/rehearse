@@ -6,6 +6,6 @@ Acceptance criteria for [`rehearse version`](../README.md).
 |---|---|---|
 | [prints-version-info](prints-version-info.ac.md) | Prints version, commit, and date in expected format | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.

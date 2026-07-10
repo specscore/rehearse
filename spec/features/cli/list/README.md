@@ -1,6 +1,7 @@
 # Feature: CLI — list
 
 **Status:** In Progress
+**Source Ideas:** —
 
 ## Summary
 
@@ -67,6 +68,9 @@ Scenario files are identified by the `.test.md` extension. Files without this ex
 | [lists-all-scenarios](_acs/lists-all-scenarios.ac.md) | All discovered scenarios shown with name, description, and tags | planned |
 | [filters-by-tag](_acs/filters-by-tag.ac.md) | --tag flag filters listed scenarios | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/feature-specification*

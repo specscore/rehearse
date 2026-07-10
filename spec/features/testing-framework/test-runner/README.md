@@ -1,6 +1,7 @@
 # Feature: Test Runner
 
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -251,9 +252,12 @@ rehearse run spec/features/testing-framework/test-runner/_tests/ --run-manual-te
 | [reports-pass-fail-exit-code](_acs/reports-pass-fail-exit-code.ac.md) | Exit 0 on all pass, non-zero on any failure | planned |
 | [detects-include-cycles](_acs/detects-include-cycles.ac.md) | Circular includes rejected at validation | planned |
 
-## Outstanding Questions
+## Open Questions
 
 - What is the exact reporting format for CI — should the runner support TAP and/or JUnit XML in addition to text and JSON?
 - Should the runner support a `--dry-run` mode that parses and validates scenarios without executing them?
 - Should there be a `--timeout` flag for per-scenario or per-step time limits?
 - Should the runner cache parsed AC files across steps that reference the same feature, or re-parse each time for simplicity?
+
+---
+*This document follows the https://specscore.md/feature-specification*

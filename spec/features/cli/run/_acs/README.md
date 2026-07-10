@@ -17,6 +17,6 @@ Acceptance criteria for [`rehearse run`](../README.md).
 | [exit-2-invalid-args](exit-2-invalid-args.ac.md) | Exits 2 on invalid arguments | planned |
 | [exit-3-not-found](exit-3-not-found.ac.md) | Exits 3 when target path does not exist | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.

@@ -6,6 +6,9 @@ Feature-scoped test scenarios for [`rehearse version`](../README.md).
 |---|---|---|
 | [version-core](version-core.test.md) | Verifies `rehearse version` output format and exit code | integration, cli, version |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/scenarios-index-specification*

@@ -127,3 +127,6 @@ echo "$filtered"
 ```bash
 rm -rf "$FIXTURE_DIR"
 ```
+
+---
+*This document follows the https://specscore.md/scenario-specification*

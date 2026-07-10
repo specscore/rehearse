@@ -555,3 +555,6 @@ echo "$ff_output"
 ````bash
 rm -rf "$FIXTURE_DIR"
 ````
+
+---
+*This document follows the https://specscore.md/scenario-specification*

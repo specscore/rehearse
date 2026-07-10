@@ -1,6 +1,7 @@
 # Feature: CLI — validate
 
 **Status:** In Progress
+**Source Ideas:** —
 
 ## Summary
 
@@ -153,6 +154,9 @@ Validated 12 scenarios, 34 ACs — no errors.
 | [exit-2-invalid-args](_acs/exit-2-invalid-args.ac.md) | Exits 2 on invalid arguments | planned |
 | [fail-fast-stops-early](_acs/fail-fast-stops-early.ac.md) | --fail-fast stops validation after the error limit is reached | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/feature-specification*

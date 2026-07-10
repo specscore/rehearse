@@ -1,6 +1,7 @@
 # Feature: Test Scenario
 
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -257,10 +258,13 @@ Sub-flows live in `spec/tests/flows/` for cross-feature reuse, or `spec/features
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - Acceptance criteria not yet defined for this feature.
 - Should scenarios support conditional steps (skip-if / run-if based on output values) for handling platform-specific or environment-specific test paths?
 - Should there be a maximum nesting depth for includes to prevent overly complex test hierarchies?
 - Should step timeouts be configurable per-step via a `**Timeout:**` metadata field, or only at the framework level?
 - Should inline assertion failures be reported as individual step sub-items, or as a collapsed summary showing only the count of passed/failed assertions?
+
+---
+*This document follows the https://specscore.md/feature-specification*

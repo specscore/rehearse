@@ -6,6 +6,9 @@ Feature-scoped test scenarios for [`rehearse validate`](../README.md).
 |---|---|---|
 | [validate-core](validate-core.test.md) | Core `rehearse validate` behaviors: scenario validation, AC validation, cross-reference checks, no execution | integration, cli, validate |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/scenarios-index-specification*

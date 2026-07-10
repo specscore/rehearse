@@ -1,6 +1,7 @@
 # Feature: CLI — `rehearse run`
 
 **Status:** In Progress
+**Source Ideas:** —
 
 ## Summary
 
@@ -99,6 +100,9 @@ All exit codes follow the shared [CLI exit code contract](../README.md#exit-code
 | [exit-2-invalid-args](_acs/exit-2-invalid-args.ac.md) | Exits 2 on invalid arguments | planned |
 | [exit-3-not-found](_acs/exit-3-not-found.ac.md) | Exits 3 when path does not exist | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/feature-specification*

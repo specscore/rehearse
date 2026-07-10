@@ -420,3 +420,6 @@ echo "HTTP assertions passed: content-type=${{ context.example_content_type }}"
 ```bash
 rm -rf "$FIXTURE_DIR"
 ```
+
+---
+*This document follows the https://specscore.md/scenario-specification*

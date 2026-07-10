@@ -24,6 +24,9 @@ The contract between what a feature promises and what the system delivers. Each 
 
 The `rehearse` command-line interface. Follows a `rehearse <action>` pattern with consistent exit codes and structured output formats. Contains four sub-commands: [run](cli/run/README.md) executes test scenarios, [list](cli/list/README.md) discovers and lists available scenarios, [validate](cli/validate/README.md) checks structural validity of scenarios and ACs without execution, and [version](cli/version/README.md) prints build information.
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/features-index-specification*

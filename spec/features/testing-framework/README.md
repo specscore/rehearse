@@ -1,6 +1,7 @@
 # Feature: Testing Framework
 
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -126,8 +127,11 @@ See the [test runner's Running the Self-Tests section](test-runner/README.md#run
 
 Not defined yet.
 
-## Outstanding Questions
+## Open Questions
 
 - Acceptance criteria not yet defined for this feature.
 - Should the framework support test fixtures or shared setup beyond sub-flows (e.g., a `spec/tests/fixtures/` directory for static test data)?
 - Should there be a `spec/tests/config.yaml` for framework-level settings (default timeouts, parallelism limits, reporter format)?
+
+---
+*This document follows the https://specscore.md/feature-specification*

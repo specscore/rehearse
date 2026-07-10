@@ -1,6 +1,7 @@
 # Feature: CLI — version
 
 **Status:** In Progress
+**Source Ideas:** —
 
 ## Summary
 
@@ -51,6 +52,9 @@ None — standalone informational command.
 |---|---|---|
 | [prints-version-info](_acs/prints-version-info.ac.md) | Prints version, commit, and date in expected format | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/feature-specification*

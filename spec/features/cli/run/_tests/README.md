@@ -6,6 +6,9 @@ Feature-scoped test scenarios for [`rehearse run`](../README.md).
 |---|---|---|
 | [run-core](run-core.test.md) | Core `rehearse run` behaviors: single file, directory scan, tag filtering, manual handling, exit codes | integration, cli, run |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.
+
+---
+*This document follows the https://specscore.md/scenarios-index-specification*

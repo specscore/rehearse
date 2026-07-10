@@ -1,6 +1,7 @@
 # Feature: HTTP Requests
 
 **Status:** Conceptual
+**Source Ideas:** —
 
 ## Summary
 
@@ -178,9 +179,12 @@ Content-Type: application/json
 | [network-error-fails-step](_acs/network-error-fails-step.ac.md) | network errors (unreachable host, timeout) fail the step; non-2xx responses do not | planned |
 | [parses-http-block-format](_acs/parses-http-block-format.ac.md) | runner correctly parses method, url, headers, and body from http code block | planned |
 
-## Outstanding Questions
+## Open Questions
 
 - Should `http` blocks support request timeouts via a `**Timeout:**` metadata field, or inherit from a global runner setting?
 - Should response headers be accessible as `context.response.headers.content-type` (dot notation) in addition to the `RESPONSE_HEADERS_CONTENT_TYPE` env var convention?
 - Should the runner follow HTTP redirects by default, or require an explicit `**Follow-Redirects:** true` metadata field?
 - Should there be a way to define base URLs or common headers at the scenario level to avoid repeating them per step?
+
+---
+*This document follows the https://specscore.md/feature-specification*

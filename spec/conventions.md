@@ -25,6 +25,6 @@ All slugs (AC and scenario) are lowercase, hyphen-separated, and unique within t
 
 The `_` prefix signals "not a sub-feature" — these directories are excluded from the feature index and Contents table.
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.

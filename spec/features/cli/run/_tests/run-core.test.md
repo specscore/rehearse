@@ -226,3 +226,6 @@ echo "Not-found path correctly exited with code 3"
 ```bash
 rm -rf "$FIXTURE_DIR"
 ```
+
+---
+*This document follows the https://specscore.md/scenario-specification*

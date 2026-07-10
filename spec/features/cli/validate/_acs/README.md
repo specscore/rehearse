@@ -14,6 +14,6 @@ Acceptance criteria for [`rehearse validate`](../README.md).
 | [exit-2-invalid-args](exit-2-invalid-args.ac.md) | Exits 2 on invalid arguments | planned |
 | [fail-fast-stops-early](fail-fast-stops-early.ac.md) | --fail-fast stops validation after the error limit is reached | planned |
 
-## Outstanding Questions
+## Open Questions
 
 None at this time.

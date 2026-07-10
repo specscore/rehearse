@@ -50,3 +50,6 @@ echo "$output" | grep -Eq "$pattern" || {
 
 echo "$output"
 ````
+
+---
+*This document follows the https://specscore.md/scenario-specification*
