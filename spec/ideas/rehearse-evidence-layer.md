@@ -88,3 +88,5 @@ v0.3 as above, timeboxed to one focused week of agent-days: fold-in, Hurl-embedd
 
 - Does the thin standalone `rehearse` binary survive long-term, or does the core live only as a Go package consumed by specscore-cli (standalone = `specscore rehearse` with no spec tree)? Decide at v0.4 from actual standalone demand.
 - Module/repo home after fold-in: keep this repo as the format-spec home with the package extracted, or move wholesale into specscore-cli? (Repo-naming standard consultation needed.)
+
+**Addendum (founder, 2026-07-10):** v0.3 scope grew two ways during specify: (1) SQL/DTQL/GraphQL blocks join http (GraphQL compiles onto the Hurl engine; DTQL runs via dalgo against SQLite stores incl. Studio fact stores); (2) the **context bag** is first-class in v0.3 — scenario-scoped variables with {{name}} interpolation across ALL block kinds and per-kind capture directives (Postman-style chaining generalized beyond HTTP: http→sql→bash flows). Spec: specscore-cli spec/features/cli/rehearse/run.
