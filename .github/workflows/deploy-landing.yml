@@ -1,0 +1,58 @@
+name: Deploy landing (Cloudflare Pages)
+
+# Deploys the static Rehearse landing (landing/) to Cloudflare Pages, so
+# rehearse.ink is served from this repo and every deploy is visible and
+# auditable in GitHub Actions rather than done by hand in the dashboard.
+#
+# Auth (set once, at the repo or org level):
+#   - secret   CLOUDFLARE_API_TOKEN  — a Cloudflare API token with the
+#              "Cloudflare Pages: Edit" permission.
+#   - variable CLOUDFLARE_ACCOUNT_ID — the account id (an identifier, not a
+#              secret; mirrors the Sneat cf-deploy convention).
+# The job is guarded on the variable, so it is skipped (not failed) until the
+# account id is configured — no red runs before setup.
+#
+# One-time Cloudflare setup (dashboard, cannot be automated from here):
+#   - Attach the custom domain rehearse.ink to the "rehearse-ink" Pages project
+#     (the project is auto-created by the first successful run below).
+#   - Add a redirect rule: rehearse.md/* -> https://rehearse.ink/$1 (301).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'landing/**'
+      - '.github/workflows/deploy-landing.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-landing-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy landing/ to Cloudflare Pages (rehearse.ink)
+    runs-on: ubuntu-latest
+    # Skip cleanly until the account id is configured.
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Ensure the Pages project exists
+        # Idempotent: no-op if it already exists.
+        run: npx --yes wrangler@3 pages project create rehearse-ink --production-branch=main 2>/dev/null || true
+
+      - name: Deploy
+        run: npx --yes wrangler@3 pages deploy landing --project-name=rehearse-ink --branch=main
