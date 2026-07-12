@@ -197,8 +197,28 @@ a:hover { color: var(--mark-red); }
   overflow-x: auto;
   color: var(--ink);
 }
+.sample pre code {
+  font: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+}
 .sample .c-key { color: var(--mark-red); font-weight: 600; }
 .sample .c-com { color: var(--pale-ink); }
+
+/* === HOOK + PAYOFF === */
+.section--hook .section__body p { font-size: 1.05rem; color: var(--ink); }
+.section--payoff { border-bottom: none; }
+.payoff {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+  border-left: 2px solid var(--mark-red);
+  padding-left: 1.25rem;
+}
 
 /* === FOOTER === */
 .site-footer { padding: 2.5rem 0 3rem; }

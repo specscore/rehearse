@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rehearse — run your specs, prove your software</title>
-  <meta name="description" content="Rehearse is SpecScore's acceptance-evidence layer: Markdown scenarios that run real commands to prove software does what its documentation promises. No glue code, no mocks. Pre-v1, in active development.">
+  <title>Rehearse — explain by example: the sign-in scenario</title>
+  <meta name="description" content="Rehearse is SpecScore's acceptance-evidence layer: Markdown scenarios that run real commands to prove software does what its documentation promises. Explained through one login page — three methods, success and failure. Pre-v1, in active development.">
   <link rel="canonical" href="https://rehearse.md/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,73 +40,161 @@
     <div class="status">
       <div class="status__inner">
         <span class="status__tag">Pre-v1</span>
-        <p>Rehearse is in active development. The capabilities below are shipped and working today (in the <a href="https://github.com/specscore/specscore-cli">specscore-cli</a> runtime). There is no stable release yet — expect changes, and don't build on it as if the format were frozen.</p>
+        <p>Rehearse is in active development. Everything below is shipped and runs today (in the <a href="https://github.com/specscore/specscore-cli">specscore-cli</a> runtime). There is no stable release yet — expect changes, and don't build on it as if the format were frozen.</p>
       </div>
     </div>
 
-    <!-- SECTION 1: real execution -->
-    <section class="section">
+    <!-- HOOK -->
+    <section class="section section--hook">
       <div class="wrap">
-        <p class="section__label">01 — Real execution</p>
-        <h2 class="section__title">The description is the test. No glue, no mocks.</h2>
+        <p class="section__label">Explain by example</p>
+        <h2 class="section__title">One login page. Three methods. Success and failure.</h2>
         <div class="section__body">
-          <p>A scenario is a single Markdown file where human-readable steps <em>are</em> the executable ones. A <code>```bash</code>, <code>```sql</code>, <code>```hurl</code> (HTTP), or <code>```graphql</code> block under a <code>## Given</code> / <code>## When</code> / <code>## Then</code> heading runs directly — no fixture classes, no step-definition layer, no separate "here's the spec / there's the code" split.</p>
-          <p>And nothing is faked. Rehearse runs the <strong>real</strong> commands against a <strong>real</strong>, throwaway filesystem, one scenario at a time for determinism. A mock rigged to pass proves nothing; real execution is the whole point.</p>
+          <p>Your app has a login page. Users sign in three ways — email/password, Google, Facebook. Different flows, but after ANY successful sign-in the same things must be true: a hardened session cookie, a redirect to the dashboard. And each method must handle failure. How do you test that — for real — without copy-pasting the checks into every flow?</p>
+          <p>Rehearse answers that in four moves, and each move is a real feature you can run today.</p>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: reuse via **Use:** -->
+    <!-- ACT 1 -->
     <section class="section">
       <div class="wrap">
-        <p class="section__label">02 — Reuse, not copy-paste</p>
-        <h2 class="section__title">Write a check once. Invoke it with <code>**Use:**</code>.</h2>
+        <p class="section__label">Act 1</p>
+        <h2 class="section__title">A scenario is real commands. No glue, no mocks.</h2>
         <div class="section__body">
-          <p>A <strong>check</strong> is a reusable, parameterized verification unit — write "the session cookie is hardened" once, then invoke it from every flow that needs it. A scenario calls a check with a <code>**Use:**</code> directive: a plain Markdown link (clickable on GitHub) plus <code>name=value</code> parameters.</p>
+          <p>Start with email sign-in. Given/When/Then, but the steps are actual commands that run:</p>
         </div>
 
         <div class="sample">
-          <div class="sample__caption">session-hardened.check.md — written once</div>
-<pre><span class="c-com"># Check: session-hardened</span>
+          <div class="sample__caption">email-sign-in.md</div>
+<pre><code><span class="c-com"># Rehearse: Email sign-in</span>
 
+<span class="c-com">## Given a registered user</span>
+```bash
+echo 'email=ada@example.com&amp;password=s3cr3t' &gt; form.txt
+```
+
+<span class="c-com">## When the form is POSTed to the sign-in endpoint</span>
+```bash
+printf 'HTTP/1.1 302 Found\r\nLocation: /dashboard\r\nSet-Cookie: session=abc; HttpOnly; Secure\r\n\r\n' &gt; out.txt
+```
+
+<span class="c-com">## Then the response redirects</span>
+```bash
+grep -q '302 Found' out.txt || exit 1
+```</code></pre>
+        </div>
+
+        <div class="section__body">
+          <p>No step-definition layer, no mock server — the description <em>is</em> the test. (Real project: swap the <code>printf</code> for a real <code>curl</code> against the running app.)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACT 2 -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section__label">Act 2</p>
+        <h2 class="section__title">Write the check once. Reuse it across every method.</h2>
+        <div class="section__body">
+          <p>The post-auth verification — "the session cookie is hardened" — is IDENTICAL for email, Google, and Facebook. So write it once, as a reusable <strong>check</strong>:</p>
+        </div>
+
+        <div class="sample">
+          <div class="sample__caption">_checks/session-hardened.check.md</div>
+<pre><code><span class="c-com"># Check: session-hardened</span>
 <span class="c-key">**Params:**</span> response_file
 
 ```bash
 grep -qi '^set-cookie: session=' {{response_file}} || { echo "no session cookie"; exit 1; }
-grep -i  '^set-cookie: session=' {{response_file}} | grep -qi 'HttpOnly' || { echo "not HttpOnly"; exit 1; }
-echo "session hardened"
-```</pre>
+grep -i  '^set-cookie: session=' {{response_file}} | grep -qi 'HttpOnly' || { echo "cookie not HttpOnly"; exit 1; }
+```</code></pre>
+        </div>
+
+        <div class="section__body">
+          <p>Then invoke it from any scenario with one line — the SAME line in the email, Google, and Facebook flows:</p>
         </div>
 
         <div class="sample">
-          <div class="sample__caption">email-login.md, google-login.md, facebook-login.md — each reuses it</div>
-<pre><span class="c-com">## Then the session is hardened</span>
-<span class="c-key">**Use:**</span> [session-hardened](./_checks/session-hardened.check.md) with response_file=out.txt</pre>
+          <div class="sample__caption">email-sign-in.md, google-sign-in.md, facebook-sign-in.md — each reuses it</div>
+<pre><code><span class="c-com">## Then the session is hardened</span>
+<span class="c-key">**Use:**</span> [session-hardened](./_checks/session-hardened.check.md) with response_file=out.txt</code></pre>
+        </div>
+
+        <div class="section__body">
+          <p>Three sign-in methods, one check. Tighten the rule (also require <code>Secure</code>) and every method stays honest — you edit one file, not three. No copy-paste.</p>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 3: markdown-native + agent-authorable -->
+    <!-- ACT 3 -->
     <section class="section">
       <div class="wrap">
-        <p class="section__label">03 — Markdown-native, agent-authorable</p>
-        <h2 class="section__title">Read on GitHub, run in CI, authored fluently by an AI agent.</h2>
+        <p class="section__label">Act 3</p>
+        <h2 class="section__title">Branch success and failure from one shared setup.</h2>
         <div class="section__body">
-          <p>Scenarios and checks are plain Markdown in git — reviewable in a pull request, diffable, no proprietary format. The same file a product owner reads, a developer runs, and an AI coding agent writes.</p>
-          <p>Acceptance criteria stay <strong>thin</strong>: each lives as a standalone <code>_acs/*.ac.md</code> file stating only <em>what must be true</em>, and <code>specscore rehearse acs</code> generates a readable <code>## Acceptance Criteria</code> summary from them — single source of truth, one projection to read.</p>
+          <p>Google sign-in can succeed or be denied. Both start from the same account. Express that as a <strong>nested suite</strong> — one <code>## Given</code>, multiple <code>### When</code> branches (describe/context/it):</p>
+        </div>
+
+        <div class="sample">
+          <div class="sample__caption">google-sign-in.md</div>
+<pre><code><span class="c-com">## Given a Google identity mapped to a user</span>
+```bash
+echo 'sub=10432' &gt; identity.txt
+```
+
+<span class="c-com">### When the OAuth callback succeeds</span>
+```bash
+printf 'HTTP/1.1 302 Found\r\nLocation: /dashboard\r\nSet-Cookie: session=g0og; HttpOnly; Secure\r\n\r\n' &gt; out.txt
+```
+<span class="c-com">#### Then the session is hardened</span>
+<span class="c-key">**Use:**</span> [session-hardened](./_checks/session-hardened.check.md) with response_file=out.txt
+
+<span class="c-com">### When the user denies consent</span>
+```bash
+printf 'HTTP/1.1 302 Found\r\nLocation: /login?error=access_denied\r\n\r\n' &gt; out.txt
+```
+<span class="c-com">#### Then no session is issued and the user returns to login</span>
+```bash
+grep -qi '^set-cookie: session=' out.txt &amp;&amp; exit 1
+grep -qi '^Location: /login' out.txt || exit 1
+```</code></pre>
+        </div>
+
+        <div class="section__body">
+          <p>That one file runs as <strong>two independent cases</strong> — <code>google-sign-in.md › When the OAuth callback succeeds</code> and <code>… › When the user denies consent</code> — each in its own sandbox, sharing the setup. The success branch even reuses the check from Act 2. (The success branch reuses the <code>**Use:**</code> check; the denial branch has its own outcome.)</p>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 4: self-hosting -->
+    <!-- ACT 4 -->
     <section class="section">
       <div class="wrap">
-        <p class="section__label">04 — Evidence, not vibes</p>
-        <h2 class="section__title">Rehearse tests itself.</h2>
+        <p class="section__label">Act 4</p>
+        <h2 class="section__title">The criteria are thin, and their summary is generated.</h2>
         <div class="section__body">
-          <p>Rehearse's own acceptance criteria are proven by Rehearse scenarios, run in CI. It eats its own cooking: the reuse property above is verified end-to-end by a three-method login demo where email, Google, and Facebook flows each invoke the <em>same</em> two shared checks.</p>
-          <p>Results export as JSON and feed back into SpecScore as verified-behavior facts — so a spec can give an honest, current answer to "does this still actually work?"</p>
+          <p>The things that must be true — "session hardened," "redirected to dashboard" — are <strong>thin acceptance criteria</strong>: one file each, intent only, no test machinery.</p>
         </div>
+
+        <div class="sample">
+          <div class="sample__caption">_acs/session-hardened.ac.md</div>
+<pre><code><span class="c-com"># AC: session-hardened</span>
+<span class="c-key">**Status:**</span> accepted
+
+<span class="c-com">## Statement</span>
+After any successful sign-in, the session cookie is HttpOnly and Secure.</code></pre>
+        </div>
+
+        <div class="section__body">
+          <p>Run <code>specscore rehearse acs spec/features/auth/login</code> and it generates the feature's <code>## Acceptance Criteria</code> summary table from the <code>_acs/</code> files — every criterion's intent readable in one glance (a person skims it; an agent reads it in one shot, no per-file lookups), while each <code>.ac.md</code> stays the single source of truth.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAYOFF -->
+    <section class="section section--payoff">
+      <div class="wrap">
+        <p class="payoff">One login page, three methods, success and failure — and the shared verification is written once, the branches read like behaviour, the criteria are one glance away, and every line runs for real. That's Rehearse.</p>
       </div>
     </section>
   </main>
