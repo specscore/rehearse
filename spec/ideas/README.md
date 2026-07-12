@@ -11,6 +11,7 @@ Pre-spec one-pagers. Each Idea is a lint-clean problem-direction-MVP one-pager t
 | Idea | Status | Date | Owner | Promotes To |
 |------|--------|------|-------|-------------|
 | [rehearse-evidence-layer](rehearse-evidence-layer.md) | Draft | 2026-07-10 | alex | — |
+| [shared-verification-model](shared-verification-model.md) | Draft | 2026-07-12 | alex | — |
 
 ## Open Questions
 
