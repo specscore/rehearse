@@ -243,3 +243,10 @@ a:hover { color: var(--mark-red); }
   .hero { padding: 2.5rem 0 2rem; }
   .status__inner { flex-direction: column; gap: 0.5rem; }
 }
+
+/* Pointer from the payoff to the full SpecScore artifact-tree example. */
+.payoff-note {
+  margin-top: var(--space-3, 1rem);
+  font-size: 0.9rem;
+  color: var(--mid-ink, #555);
+}
