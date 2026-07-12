@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rehearse — run your specs, prove your software</title>
+  <meta name="description" content="Rehearse is SpecScore's acceptance-evidence layer: Markdown scenarios that run real commands to prove software does what its documentation promises. No glue code, no mocks. Pre-v1, in active development.">
+  <link rel="canonical" href="https://rehearse.md/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="/" class="wordmark">Rehearse<span class="wordmark__mark">.</span></a>
+      <nav class="site-header__nav" aria-label="Primary">
+        <a href="https://specscore.md/rehearse">Docs</a>
+        <a href="https://github.com/specscore/rehearse">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <p class="hero__eyebrow">SpecScore's acceptance-evidence layer</p>
+        <h1 class="hero__headline">Run your specs. Prove your software does what its docs promise.</h1>
+        <p class="hero__sub">Rehearse turns Markdown scenarios into real, executable checks — bash, SQL, HTTP — that run the promises in your specification for real. No glue code. No mocks.</p>
+        <div class="hero__cta">
+          <a href="https://specscore.md/rehearse">Read the docs &rarr;</a>
+          <a href="https://github.com/specscore/rehearse">Source on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATUS -->
+    <div class="status">
+      <div class="status__inner">
+        <span class="status__tag">Pre-v1</span>
+        <p>Rehearse is in active development. The capabilities below are shipped and working today (in the <a href="https://github.com/specscore/specscore-cli">specscore-cli</a> runtime). There is no stable release yet — expect changes, and don't build on it as if the format were frozen.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 1: real execution -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section__label">01 — Real execution</p>
+        <h2 class="section__title">The description is the test. No glue, no mocks.</h2>
+        <div class="section__body">
+          <p>A scenario is a single Markdown file where human-readable steps <em>are</em> the executable ones. A <code>```bash</code>, <code>```sql</code>, <code>```hurl</code> (HTTP), or <code>```graphql</code> block under a <code>## Given</code> / <code>## When</code> / <code>## Then</code> heading runs directly — no fixture classes, no step-definition layer, no separate "here's the spec / there's the code" split.</p>
+          <p>And nothing is faked. Rehearse runs the <strong>real</strong> commands against a <strong>real</strong>, throwaway filesystem, one scenario at a time for determinism. A mock rigged to pass proves nothing; real execution is the whole point.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: reuse via **Use:** -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section__label">02 — Reuse, not copy-paste</p>
+        <h2 class="section__title">Write a check once. Invoke it with <code>**Use:**</code>.</h2>
+        <div class="section__body">
+          <p>A <strong>check</strong> is a reusable, parameterized verification unit — write "the session cookie is hardened" once, then invoke it from every flow that needs it. A scenario calls a check with a <code>**Use:**</code> directive: a plain Markdown link (clickable on GitHub) plus <code>name=value</code> parameters.</p>
+        </div>
+
+        <div class="sample">
+          <div class="sample__caption">session-hardened.check.md — written once</div>
+<pre><span class="c-com"># Check: session-hardened</span>
+
+<span class="c-key">**Params:**</span> response_file
+
+```bash
+grep -qi '^set-cookie: session=' {{response_file}} || { echo "no session cookie"; exit 1; }
+grep -i  '^set-cookie: session=' {{response_file}} | grep -qi 'HttpOnly' || { echo "not HttpOnly"; exit 1; }
+echo "session hardened"
+```</pre>
+        </div>
+
+        <div class="sample">
+          <div class="sample__caption">email-login.md, google-login.md, facebook-login.md — each reuses it</div>
+<pre><span class="c-com">## Then the session is hardened</span>
+<span class="c-key">**Use:**</span> [session-hardened](./_checks/session-hardened.check.md) with response_file=out.txt</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: markdown-native + agent-authorable -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section__label">03 — Markdown-native, agent-authorable</p>
+        <h2 class="section__title">Read on GitHub, run in CI, authored fluently by an AI agent.</h2>
+        <div class="section__body">
+          <p>Scenarios and checks are plain Markdown in git — reviewable in a pull request, diffable, no proprietary format. The same file a product owner reads, a developer runs, and an AI coding agent writes.</p>
+          <p>Acceptance criteria stay <strong>thin</strong>: each lives as a standalone <code>_acs/*.ac.md</code> file stating only <em>what must be true</em>, and <code>specscore rehearse acs</code> generates a readable <code>## Acceptance Criteria</code> summary from them — single source of truth, one projection to read.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: self-hosting -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section__label">04 — Evidence, not vibes</p>
+        <h2 class="section__title">Rehearse tests itself.</h2>
+        <div class="section__body">
+          <p>Rehearse's own acceptance criteria are proven by Rehearse scenarios, run in CI. It eats its own cooking: the reuse property above is verified end-to-end by a three-method login demo where email, Google, and Facebook flows each invoke the <em>same</em> two shared checks.</p>
+          <p>Results export as JSON and feed back into SpecScore as verified-behavior facts — so a spec can give an honest, current answer to "does this still actually work?"</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__links">
+        <a href="https://specscore.md/rehearse">Rehearse in plain language</a>
+        <a href="https://specscore.md/rehearse-vs-testing-frameworks">Rehearse vs. testing frameworks</a>
+        <a href="https://github.com/specscore/rehearse">GitHub</a>
+      </div>
+      <p class="site-footer__copyright">Part of the <a href="https://specscore.md">SpecScore</a> ecosystem. Pre-v1, in active development. MIT license.</p>
+    </div>
+  </footer>
+</body>
+</html>
