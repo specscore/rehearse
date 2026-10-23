@@ -39,7 +39,8 @@ func (r HTTPResult) Env() []string {
 
 // ContextVars returns flat key=value pairs for storing in the execution context.
 // Keys: "response.status", "response.status_text", "response.body",
-//       "response.headers.<lowercased-name>".
+//
+//	"response.headers.<lowercased-name>".
 func (r HTTPResult) ContextVars() map[string]string {
 	vars := map[string]string{
 		"response.status":      fmt.Sprintf("%d", r.Status),
@@ -125,7 +126,7 @@ func execHTTPRequest(code string) (HTTPResult, error) {
 	if err != nil {
 		return HTTPResult{}, fmt.Errorf("executing request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {

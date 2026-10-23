@@ -18,7 +18,9 @@ func TestValidateCommand_validScenario(t *testing.T) {
 ## step-a
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -44,7 +46,9 @@ func TestValidateCommand_invalidScenario(t *testing.T) {
 ## step-a
 
 ` + "```\necho hi\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -94,7 +98,9 @@ func TestValidateCommand_directory(t *testing.T) {
 ## check-it
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(filepath.Join(dir, "ok.test.md"), []byte(content), 0o644)
+	if err := os.WriteFile(filepath.Join(dir, "ok.test.md"), []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -112,7 +118,9 @@ func TestValidateCommand_specRootFlag(t *testing.T) {
 	// Create spec root with an AC.
 	specRoot := filepath.Join(dir, "spec")
 	acsDir := filepath.Join(specRoot, "features", "my-feature", "_acs")
-	os.MkdirAll(acsDir, 0o755)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	ac := `# AC: my-ac
 
 **Status:** planned
@@ -126,11 +134,15 @@ Test AC.
 
 None.
 `
-	os.WriteFile(filepath.Join(acsDir, "my-ac.ac.md"), []byte(ac), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "my-ac.ac.md"), []byte(ac), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	// Scenario referencing the AC.
 	testsDir := filepath.Join(dir, "tests")
-	os.MkdirAll(testsDir, 0o755)
+	if err := os.MkdirAll(testsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	scenario := `# Scenario: Spec Root Test
 
 **Description:** Tests spec-root flag.
@@ -144,7 +156,9 @@ None.
 | [my-feature](spec/features/my-feature) | [my-ac](my-ac.ac.md) |
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(filepath.Join(testsDir, "ref.test.md"), []byte(scenario), 0o644)
+	if err := os.WriteFile(filepath.Join(testsDir, "ref.test.md"), []byte(scenario), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -177,7 +191,9 @@ Good AC.
 ## Verification
 
 ` + "```bash\ntest -n \"$STEP_STDOUT\"\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -196,7 +212,9 @@ func TestValidateCommand_invalidACFile(t *testing.T) {
 
 **Status:** bogus
 `
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	cmd := ValidateCommand()
 	var buf bytes.Buffer
@@ -218,7 +236,9 @@ func TestValidateCommand_failFastDefault(t *testing.T) {
 	dir := t.TempDir()
 	// Create 3 bad files.
 	for _, name := range []string{"a.test.md", "b.test.md", "c.test.md"} {
-		os.WriteFile(filepath.Join(dir, name), []byte("no title\n"), 0o644)
+		if err := os.WriteFile(filepath.Join(dir, name), []byte("no title\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	// --fail-fast without value → limit 1
@@ -240,7 +260,9 @@ func TestValidateCommand_failFastDefault(t *testing.T) {
 func TestValidateCommand_failFastWithValue(t *testing.T) {
 	dir := t.TempDir()
 	for _, name := range []string{"a.test.md", "b.test.md", "c.test.md"} {
-		os.WriteFile(filepath.Join(dir, name), []byte("no title\n"), 0o644)
+		if err := os.WriteFile(filepath.Join(dir, name), []byte("no title\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	// --fail-fast=2 → limit 2

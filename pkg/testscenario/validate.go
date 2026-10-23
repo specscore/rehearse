@@ -34,11 +34,6 @@ func (r *ValidationResult) HasErrors() bool {
 	return len(r.Errors) > 0
 }
 
-// addError appends a validation error.
-func (r *ValidationResult) addError(file string, line int, msg string) {
-	r.Errors = append(r.Errors, ValidationError{File: file, Line: line, Message: msg})
-}
-
 // appendErrors adds errors up to the maxErrors limit (0 = unlimited).
 // Sets Truncated when the limit is reached.
 func (r *ValidationResult) appendErrors(errs []ValidationError, maxErrors int) {
@@ -533,7 +528,7 @@ func isKebabCase(s string) bool {
 		if c == '_' || c == ' ' {
 			return false
 		}
-		if !(c >= 'a' && c <= 'z') && !(c >= '0' && c <= '9') && c != '-' {
+		if (c < 'a' || c > 'z') && (c < '0' || c > '9') && c != '-' {
 			return false
 		}
 	}
@@ -601,15 +596,15 @@ func FormatValidationResult(result *ValidationResult) string {
 		sb.WriteString("\n")
 		for _, e := range byFile[file] {
 			if e.Line > 0 {
-				sb.WriteString(fmt.Sprintf("  line %d: %s\n", e.Line, e.Message))
+				fmt.Fprintf(&sb, "  line %d: %s\n", e.Line, e.Message)
 			} else {
-				sb.WriteString(fmt.Sprintf("  %s\n", e.Message))
+				fmt.Fprintf(&sb, "  %s\n", e.Message)
 			}
 		}
 		sb.WriteString("\n")
 	}
 
-	sb.WriteString(fmt.Sprintf("%d files, %d errors\n", len(fileOrder), len(result.Errors)))
+	fmt.Fprintf(&sb, "%d files, %d errors\n", len(fileOrder), len(result.Errors))
 	if result.Truncated {
 		sb.WriteString("(output truncated due to --fail-fast)\n")
 	}
