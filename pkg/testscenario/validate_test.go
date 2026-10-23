@@ -47,7 +47,9 @@ func TestValidateScenarioFile_valid(t *testing.T) {
 
 ` + "```bash\necho hello\n```\n"
 
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	errs := ValidateScenarioFile(f, "")
 	if len(errs) > 0 {
 		t.Errorf("expected no errors, got %d: %v", len(errs), errs)
@@ -57,7 +59,9 @@ func TestValidateScenarioFile_valid(t *testing.T) {
 func TestValidateScenarioFile_missingTitle(t *testing.T) {
 	dir := t.TempDir()
 	f := filepath.Join(dir, "no-title.test.md")
-	os.WriteFile(f, []byte("Just some text\n\nNo heading.\n"), 0o644)
+	if err := os.WriteFile(f, []byte("Just some text\n\nNo heading.\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(f, "")
 	if len(errs) == 0 {
@@ -82,7 +86,9 @@ func TestValidateScenarioFile_missingDescription(t *testing.T) {
 ## step-a
 
 ` + "```bash\necho hi\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(f, "")
 	found := false
@@ -106,7 +112,9 @@ func TestValidateScenarioFile_nonKebabStepName(t *testing.T) {
 ## Bad_Name
 
 ` + "```bash\necho hi\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(f, "")
 	found := false
@@ -131,7 +139,9 @@ func TestValidateScenarioFile_parseError(t *testing.T) {
 ## step-a
 
 ` + "```\necho hi\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(f, "")
 	if len(errs) == 0 {
@@ -144,12 +154,18 @@ func TestValidateScenarioFile_ACRefResolves(t *testing.T) {
 	dir := t.TempDir()
 	specRoot := filepath.Join(dir, "spec")
 	acsDir := filepath.Join(specRoot, "features", "my-feature", "_acs")
-	os.MkdirAll(acsDir, 0o755)
-	os.WriteFile(filepath.Join(acsDir, "my-ac.ac.md"), []byte("# AC: my-ac\n"), 0o644)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "my-ac.ac.md"), []byte("# AC: my-ac\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	// Create a scenario referencing the AC.
 	scenarioDir := filepath.Join(dir, "tests")
-	os.MkdirAll(scenarioDir, 0o755)
+	if err := os.MkdirAll(scenarioDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	scenarioFile := filepath.Join(scenarioDir, "ref.test.md")
 	content := `# Scenario: AC Ref Test
 
@@ -164,7 +180,9 @@ func TestValidateScenarioFile_ACRefResolves(t *testing.T) {
 | [my-feature](spec/features/my-feature) | [my-ac](my-ac.ac.md) |
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(scenarioFile, []byte(content), 0o644)
+	if err := os.WriteFile(scenarioFile, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(scenarioFile, specRoot)
 	for _, e := range errs {
@@ -178,10 +196,14 @@ func TestValidateScenarioFile_ACRefMissing(t *testing.T) {
 	dir := t.TempDir()
 	specRoot := filepath.Join(dir, "spec")
 	// Create _acs dir but without the referenced file.
-	os.MkdirAll(filepath.Join(specRoot, "features", "my-feature", "_acs"), 0o755)
+	if err := os.MkdirAll(filepath.Join(specRoot, "features", "my-feature", "_acs"), 0o755); err != nil {
+		t.Fatal(err)
+	}
 
 	scenarioDir := filepath.Join(dir, "tests")
-	os.MkdirAll(scenarioDir, 0o755)
+	if err := os.MkdirAll(scenarioDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	scenarioFile := filepath.Join(scenarioDir, "missing-ref.test.md")
 	content := `# Scenario: Missing AC
 
@@ -196,7 +218,9 @@ func TestValidateScenarioFile_ACRefMissing(t *testing.T) {
 | [my-feature](spec/features/my-feature) | [nonexistent](nonexistent.ac.md) |
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(scenarioFile, []byte(content), 0o644)
+	if err := os.WriteFile(scenarioFile, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateScenarioFile(scenarioFile, specRoot)
 	found := false
@@ -231,7 +255,9 @@ This checks something.
 ## Verification
 
 ` + "```bash\ntest -n \"$STEP_STDOUT\"\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACFile(f)
 	if len(errs) > 0 {
@@ -255,7 +281,9 @@ Mismatch test.
 
 None.
 `
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACFile(f)
 	found := false
@@ -285,7 +313,9 @@ Bad status value.
 
 None.
 `
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACFile(f)
 	found := false
@@ -307,7 +337,9 @@ func TestValidateACFile_missingSections(t *testing.T) {
 **Status:** implemented
 **Feature:** [f](../../)
 `
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACFile(f)
 	descErr, inputErr, verErr := false, false, false
@@ -349,7 +381,9 @@ This is planned.
 
 None.
 `
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACFile(f)
 	for _, e := range errs {
@@ -362,9 +396,15 @@ None.
 func TestValidateACIndex_synced(t *testing.T) {
 	dir := t.TempDir()
 	acsDir := filepath.Join(dir, "_acs")
-	os.MkdirAll(acsDir, 0o755)
-	os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644)
-	os.WriteFile(filepath.Join(acsDir, "check-b.ac.md"), []byte("# AC: check-b\n"), 0o644)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "check-b.ac.md"), []byte("# AC: check-b\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	readme := `# ACs
 
 | AC | Status |
@@ -372,7 +412,9 @@ func TestValidateACIndex_synced(t *testing.T) {
 | [check-a](check-a.ac.md) | planned |
 | [check-b](check-b.ac.md) | planned |
 `
-	os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACIndex(acsDir)
 	if len(errs) > 0 {
@@ -383,16 +425,24 @@ func TestValidateACIndex_synced(t *testing.T) {
 func TestValidateACIndex_orphan(t *testing.T) {
 	dir := t.TempDir()
 	acsDir := filepath.Join(dir, "_acs")
-	os.MkdirAll(acsDir, 0o755)
-	os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644)
-	os.WriteFile(filepath.Join(acsDir, "orphan.ac.md"), []byte("# AC: orphan\n"), 0o644)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "orphan.ac.md"), []byte("# AC: orphan\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	readme := `# ACs
 
 | AC | Status |
 | --- | --- |
 | [check-a](check-a.ac.md) | planned |
 `
-	os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACIndex(acsDir)
 	found := false
@@ -409,8 +459,12 @@ func TestValidateACIndex_orphan(t *testing.T) {
 func TestValidateACIndex_phantom(t *testing.T) {
 	dir := t.TempDir()
 	acsDir := filepath.Join(dir, "_acs")
-	os.MkdirAll(acsDir, 0o755)
-	os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(acsDir, "check-a.ac.md"), []byte("# AC: check-a\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	readme := `# ACs
 
 | AC | Status |
@@ -418,7 +472,9 @@ func TestValidateACIndex_phantom(t *testing.T) {
 | [check-a](check-a.ac.md) | planned |
 | [phantom](phantom.ac.md) | planned |
 `
-	os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	errs := ValidateACIndex(acsDir)
 	found := false
@@ -443,11 +499,15 @@ func TestValidateAll_directory(t *testing.T) {
 ## step-one
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(filepath.Join(dir, "good.test.md"), []byte(scenario), 0o644)
+	if err := os.WriteFile(filepath.Join(dir, "good.test.md"), []byte(scenario), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	// Create a valid AC.
 	acsDir := filepath.Join(dir, "_acs")
-	os.MkdirAll(acsDir, 0o755)
+	if err := os.MkdirAll(acsDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	ac := `# AC: check-good
 
 **Status:** planned
@@ -461,14 +521,18 @@ Good AC.
 
 None.
 `
-	os.WriteFile(filepath.Join(acsDir, "check-good.ac.md"), []byte(ac), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "check-good.ac.md"), []byte(ac), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	readme := `# ACs
 
 | AC | Status |
 | --- | --- |
 | [check-good](check-good.ac.md) | planned |
 `
-	os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644)
+	if err := os.WriteFile(filepath.Join(acsDir, "README.md"), []byte(readme), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	result, err := ValidateAll(dir, "", 0)
 	if err != nil {
@@ -495,7 +559,9 @@ func TestValidateAll_singleFile(t *testing.T) {
 ## do-it
 
 ` + "```bash\necho ok\n```\n"
-	os.WriteFile(f, []byte(content), 0o644)
+	if err := os.WriteFile(f, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	result, err := ValidateAll(f, "", 0)
 	if err != nil {
@@ -550,7 +616,9 @@ func TestValidateAll_failFast_stopsEarly(t *testing.T) {
 
 	// Create multiple bad files so there are many potential errors.
 	for _, name := range []string{"a.test.md", "b.test.md", "c.test.md"} {
-		os.WriteFile(filepath.Join(dir, name), []byte("no title here\n"), 0o644)
+		if err := os.WriteFile(filepath.Join(dir, name), []byte("no title here\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	// Without limit: collects all.
