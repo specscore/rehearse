@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Rehearse is built — tech stack</title>
+  <meta name="description" content="The Markdown scenarios, SpecScore CLI runtime, and static site behind Rehearse's executable acceptance evidence.">
+  <link rel="canonical" href="https://rehearse.ink/about/tech-stack/">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","name":"How Rehearse is built","url":"https://rehearse.ink/about/tech-stack/","inLanguage":"en"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rehearse.ink/"},{"@type":"ListItem","position":2,"name":"Tech stack","item":"https://rehearse.ink/about/tech-stack/"}]}]}</script>
+</head>
+<body>
+  <header class="site-header"><div class="site-header__inner">
+    <a href="/" class="wordmark">Rehearse<span class="wordmark__mark">.</span></a>
+    <nav class="site-header__nav" aria-label="Primary"><a href="/">Home</a><a href="https://specscore.md/rehearse">Docs</a><a href="https://github.com/specscore/rehearse">GitHub</a></nav>
+  </div></header>
+  <main>
+    <section class="hero"><div class="wrap">
+      <p class="hero__eyebrow">Inside the evidence layer</p>
+      <h1 class="hero__headline">The tools behind Rehearse</h1>
+      <p class="hero__sub">A tech stack is the languages, libraries and services used to build a product. Rehearse uses plain Markdown to keep acceptance evidence beside a specification, then runs its examples through the SpecScore CLI.</p>
+    </div></section>
+    <div class="status"><div class="status__inner"><span class="status__tag">Pre-v1</span><p>Rehearse is in active development. The scenario commands below run in the SpecScore CLI today; the format is not yet a stable release.</p></div></div>
+    <section class="section"><div class="wrap"><p class="section__label">The product</p><h2 class="section__title">Markdown that executes</h2><div class="section__body"><p>Scenarios are Markdown files with Given, When and Then sections and executable Bash, SQL or HTTP steps. Reusable <code>**Use:**</code> checks keep shared outcomes in one place. The <a href="https://github.com/specscore/specscore-cli">SpecScore CLI</a> runs these commands and generates a readable acceptance-criteria summary, so a reviewer can trace a promise to evidence.</p></div></div></section>
+    <section class="section"><div class="wrap"><p class="section__label">This website</p><h2 class="section__title">A small static front door</h2><div class="section__body"><p>The public site is hand-authored HTML and CSS, published from this repository's <code>landing/</code> directory through Cloudflare Pages. It explains the sign-in example without requiring a browser app or account.</p></div></div></section>
+    <section class="section"><div class="wrap"><p class="section__label">Related tools</p><h2 class="section__title">Specifications and proof together</h2><div class="section__body"><p>The open <a href="https://specscore.md/">SpecScore format</a> holds the requirement and acceptance criteria. Rehearse adds executable scenarios and evidence for those criteria. Read the <a href="https://specscore.md/example-login">complete login example</a> or inspect the <a href="https://github.com/specscore/rehearse">Rehearse source</a>.</p></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="site-footer__inner"><div class="site-footer__links"><a href="/">Home</a><a href="/about/tech-stack/">Tech stack</a><a href="https://specscore.md/rehearse">Docs</a><a href="https://github.com/specscore/rehearse">GitHub</a></div><p class="site-footer__copyright">Part of the <a href="https://specscore.md">SpecScore</a> ecosystem. Pre-v1, in active development. Apache-2.0 license.</p></div></footer>
+</body>
+</html>

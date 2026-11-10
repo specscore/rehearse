@@ -12,7 +12,9 @@ later; honesty and simplicity come first.
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The page. Self-contained; the only local asset is `style.css`. |
+| `index.html` | The home page. Self-contained; the only local asset is `style.css`. |
+| `about/tech-stack/index.html` | The English technology page. |
+| `robots.txt`, `sitemap.xml` | Discovery for both public pages. |
 | `style.css`  | Editorial styling — sibling of specscore.md (paper/ink, hairlines, ~5 colours, no gradients, no dark mode). Rehearse's accent is `--mark-red`, the prompter's correction ink. |
 
 The page describes only what actually works today (shipped in the
@@ -42,7 +44,7 @@ python3 -m http.server 8000
 Static hosting, no build. On **Cloudflare Pages**: point a project at this repo,
 set the build output directory to `landing/` and leave the build command empty.
 Any static host (GitHub Pages, Netlify, plain nginx) works the same way — upload
-the two files.
+the `landing/` directory.
 
-External links (docs, GitHub) are absolute on purpose; the only local link is
-`style.css`, so the page is fully portable.
+External links (docs, GitHub) are absolute on purpose. Local links use rooted
+paths so they work from both the home page and `/about/tech-stack/`.
