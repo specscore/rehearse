@@ -10,6 +10,52 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics 4 — Consent Mode v2, EEA/UK geo-gated.
+       Mirrors the @sneat/astro GoogleAnalytics component used by the Astro landings. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E8HHKGN4QB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    var GA_ID = "G-E8HHKGN4QB";
+    var GA_GATED = ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB"];
+    gtag("consent", "default", { analytics_storage: "granted" });
+    gtag("consent", "default", { analytics_storage: "denied", region: GA_GATED, wait_for_update: 500 });
+    gtag("config", GA_ID, { allow_google_signals: false, allow_ad_personalization_signals: false });
+    try { if (localStorage.getItem("ga-consent") === "granted") gtag("consent", "update", { analytics_storage: "granted" }); } catch (e) {}
+    function gaSetConsent(v) {
+      try { localStorage.setItem("ga-consent", v); } catch (e) {}
+      gtag("consent", "update", { analytics_storage: v });
+      var b = document.getElementById("ga-consent-banner");
+      if (b) b.remove();
+    }
+    function gaShowBanner() {
+      if (document.getElementById("ga-consent-banner")) return;
+      var wrap = document.createElement("div");
+      wrap.id = "ga-consent-banner";
+      wrap.setAttribute("role", "dialog");
+      wrap.setAttribute("aria-label", "Cookie consent");
+      wrap.innerHTML = "<p>Please accept cookies to help us understand our usage metrics. We use them only to measure traffic — never for ads or sold to anyone. Analytics stays off until you accept.</p>" +
+        '<div class="ga-consent-actions"><button type="button" id="ga-decline">Decline</button><button type="button" id="ga-accept">Accept</button></div>';
+      document.body.appendChild(wrap);
+      document.getElementById("ga-accept").addEventListener("click", function () { gaSetConsent("granted"); });
+      document.getElementById("ga-decline").addEventListener("click", function () { gaSetConsent("denied"); });
+    }
+    (function () {
+      try { if (localStorage.getItem("ga-consent")) return; } catch (e) {}
+      fetch("/cdn-cgi/trace").then(function (r) { return r.text(); }).then(function (t) {
+        var m = /(?:^|\n)loc=([A-Z]{2})/.exec(t);
+        if (m && GA_GATED.indexOf(m[1]) !== -1) gaShowBanner();
+      }).catch(function () {});
+    })();
+  </script>
+  <style>
+    #ga-consent-banner { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 2147483647; max-width: 520px; margin: 0 auto; background: #1c1f26; color: #e6e6e6; border: 1px solid #2c3038; border-radius: 12px; padding: 1rem 1.1rem; box-shadow: 0 6px 24px rgba(0,0,0,.3); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    #ga-consent-banner p { margin: 0 0 .7rem; }
+    #ga-consent-banner .ga-consent-actions { display: flex; gap: .5rem; justify-content: flex-end; }
+    #ga-consent-banner button { cursor: pointer; border-radius: 8px; padding: .4rem .9rem; font-size: 14px; border: 1px solid #3a3f4b; background: #262a32; color: #e6e6e6; }
+    #ga-consent-banner button#ga-accept { background: #2f6f43; border-color: #2f6f43; color: #fff; }
+  </style>
 </head>
 <body>
   <header class="site-header">
